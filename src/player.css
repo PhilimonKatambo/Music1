@@ -1,0 +1,93 @@
+#player{
+    width: 100%;
+    height: 15vh;
+    margin-top: 2px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 10px;
+}
+
+#controls{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items:center;
+    width: 100%;
+    gap: 10px;
+}
+#progress{
+    width: 85%;
+    display: flex;
+    flex-direction: column;
+    align-items:stretch;
+    justify-content: last baseline;
+}
+#info{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+#plate{
+    height: 30px;
+    height: fit-content;
+}
+
+#plate2{
+    background-color: #0dd5f6;
+    padding: 10px;
+    border-radius: 50px;
+}
+
+button{
+    padding: 10px;
+    border-radius: 15px;
+    background-color: #0b1a21;
+    border: 1px solid #3b81ab;
+}
+
+#back,#forward{
+    color: #0dd5f6;
+    font-size: 2rem;
+}
+
+#duration,#date{
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    color: #3b81ab;
+    font-size: 0.9em;
+}
+
+@media (max-width: 400px) {
+    #controls{
+        gap:10px
+    }
+}
+
+#MusicShow{
+    width: 100%;
+    height: 20px;
+    color: #11e3ed;
+    text-wrap:nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+input[type="range"] {
+    -webkit-appearance: none;
+    height: 8px;
+    background: #4f3391;
+    border-radius: 2px;
+    outline:#0dd5f6;
+    cursor: pointer;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 10px;
+    height: 10px;
+    background: #0dd5f6;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+}
