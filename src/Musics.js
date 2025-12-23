@@ -2,6 +2,7 @@ import './Musics.css';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import DBase from './MusicBase';
+import { useEffect, useState } from 'react';
 
 const Musics = (props) => {
 
@@ -15,7 +16,7 @@ const Musics = (props) => {
         <div id="card">
             <div id='musicArt' style={{
                 backgroundImage:
-                    props.music.image === null ? `url( https://daily.jstor.org/wp-content/uploads/2023/02/good_times_with_bad_music_1050x700.jpg)` : `url(${props.music.image})`
+                    props.music.image ? `url(${props.music.image})` : `url( https://daily.jstor.org/wp-content/uploads/2023/02/good_times_with_bad_music_1050x700.jpg)`
             }}>
                 <FontAwesomeIcon icon={faTrash} id="trash"
                     onClick={deleteSong}

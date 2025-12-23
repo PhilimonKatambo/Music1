@@ -120,7 +120,7 @@ const Player = (props) => {
             setDuration(0)
         }
         else {
-            props.setMusic(props.MusicArray[props.MusicArray.length -1 ])
+            props.setMusic(props.MusicArray[props.MusicArray.length - 1])
             setIsPlaying(false)
             setProgress(0)
             setProgress(0)
@@ -144,7 +144,6 @@ const Player = (props) => {
                 </button>
 
                 <div id="progress">
-
                     <input
                         type="range"
                         min="0"
@@ -156,7 +155,8 @@ const Player = (props) => {
                     />
 
                     <div id="info">
-                        <div id="duration">{Math.floor(duration / 60)}:{Math.floor(duration % 60)}</div>
+                        <div id="date">{Math.floor(currentTime / 60)}:{Math.floor(currentTime % 60)}</div>
+
                         <div id="plate">
                             <FontAwesomeIcon
                                 icon={isPlaying ? faPause : faPlay}
@@ -164,7 +164,8 @@ const Player = (props) => {
                                 onClick={togglePlayPause}
                             />
                         </div>
-                        <div id="date">{Math.floor(currentTime / 60)}:{Math.floor(currentTime % 60)}</div>
+                        <div id="duration">{Math.floor(duration / 60)}:{Math.floor(duration % 60)}</div>
+
                     </div>
                 </div>
 
