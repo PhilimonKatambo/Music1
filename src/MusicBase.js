@@ -14,12 +14,10 @@ class DBase {
                 let objectStore = this.db.createObjectStore('mySongs', { keyPath: 'id', autoIncrement: true });
                 objectStore.createIndex('name', 'name', { unique: false });
             }
-            console.log('Database upgraded.');
         };
 
         this.request.onsuccess = (event) => {
             this.db = event.target.result;
-            console.log('Database initialized.');
         };
 
         this.request.onerror = (event) => {
@@ -41,7 +39,6 @@ class DBase {
         const request = objectStore.add(data);
 
         request.onsuccess = () => {
-            console.log('Song added successfully.');
         };
 
         request.onerror = (event) => {
@@ -56,7 +53,6 @@ class DBase {
     
             request1.onsuccess = (event) => {
                 db = event.target.result;
-                console.log('Database initialized.');
     
                 const transaction = db.transaction(["mySongs"], "readonly");
                 const store = transaction.objectStore("mySongs");
@@ -67,22 +63,18 @@ class DBase {
                     const cursor = event.target.result;
                     if (cursor) {
                         if (cursor.value["name"] === name) {
-                            console.log('Song found');
                             SongValName.push(cursor.value["name"])
                             SongValName.push(cursor.value["value"])
-                            //console.log(SongValName)
                             resolve(SongValName);
                             return;
                         }
                         cursor.continue();
                     } else {
-                        console.log("Song not found");
                         resolve(null);
                     }
                 };
     
                 request.onerror = function () {
-                    console.log("Error retrieving song");
                     reject("Error retrieving song");
                 };
             };
@@ -113,7 +105,8 @@ class DBase {
                     if (cursor) {
                         let wholeSong={
                             name:cursor.value['name'],
-                            image:cursor.value['image']
+                            image:cursor.value['image'],
+                            value: cursor.value['value']
                         }
                         allData.push(wholeSong);
                         cursor.continue();
@@ -123,13 +116,11 @@ class DBase {
                 };
     
                 cursorRequest.onerror = function () {
-                    console.log("Error retrieving song");
                     reject("Error retrieving song");
                 };
             };
     
             request.onerror = function () {
-                console.log("Error opening database");
                 reject("Error opening database");
             };
         });
@@ -160,7 +151,6 @@ class DBase {
                     deleteRequest.onerror=()=>console.log(key+': cant delete')
                 }
                 else{
-                    console.log('entry not found')
                 }
             }
         }

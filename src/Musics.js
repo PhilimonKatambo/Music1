@@ -3,30 +3,29 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import DBase from './MusicBase';
 
-const Musics = (Music) =>{
-    const ChangeSong=(song)=>{
-        Music.setMusic(song)
-    }
-    const deleteSong=()=>{
-        const base=new DBase()
-        base.Delete(Music.name)
-        Music.GetAllSongs();
+const Musics = (props) => {
+
+    const deleteSong = () => {
+        const base = new DBase()
+        base.Delete(props.music.name)
+        props.GetAllSongs();
     }
     //<img src='logo192.png' alt="music logo"></img>
-    return(
+    return (
         <div id="card">
-            <div id='musicArt' style={{backgroundImage:
-            Music.image===null?`url( https://daily.jstor.org/wp-content/uploads/2023/02/good_times_with_bad_music_1050x700.jpg)`:`url(${Music.image})`
+            <div id='musicArt' style={{
+                backgroundImage:
+                    props.music.image === null ? `url( https://daily.jstor.org/wp-content/uploads/2023/02/good_times_with_bad_music_1050x700.jpg)` : `url(${props.music.image})`
             }}>
-                <FontAwesomeIcon icon={faTrash} id="trash" 
-                onClick={deleteSong}
+                <FontAwesomeIcon icon={faTrash} id="trash"
+                    onClick={deleteSong}
                 />
             </div>
-            <div id="details" onClick={()=>ChangeSong(Music.name)}>
+            <div id="details" onClick={() => props.setMusic(props.music)}>
                 <div id="songTitle">
-                {Music.name.split('-')[0]}
+                    {props.music.name.split('-')[0]}
                 </div>
-                <div id="artName">{Music.name.split('-')[1]?.trim() ? Music.name.split('-')[1] : 'Unknown'}</div>
+                <div id="artName">{props.music.name.split('-')[1]?.trim() ? props.music.name.split('-')[1] : 'Unknown'}</div>
             </div>
         </div>
     )

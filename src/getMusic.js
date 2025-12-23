@@ -9,7 +9,7 @@ const GetMusic=()=>{
     setFiles(fileArray)
 
     for(let file of fileArray){
-        console.log(file)
+        (file)
     }
  }
 

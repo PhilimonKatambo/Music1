@@ -9,9 +9,9 @@ import { faMusic} from "@fortawesome/free-solid-svg-icons";
   
 function App() {
   const base=new DBase();
-  const[Music1,setMusic]=useState('')
-  const [MusicArray,setMusics]=useState([])
-  const [MusicArray2, setMusics2]=useState([])
+  const[Music1,setMusic]=useState({})
+  const [MusicArray,setMusicsArray]=useState([])
+  const [MusicArray2, setMusicsArray2]=useState([])
   const [files, setFiles]=useState([]);
 
   const id=useRef(null)
@@ -20,12 +20,7 @@ function App() {
 
   const GetAllSongs=async()=>{
     const all=await base.RetriveAll();
-    all.forEach(et => {
-      all2.push(et.name)
-    });
-
-    setMusics2(all2)
-    await setMusics(all)
+    setMusicsArray(all)
   }
 
   // hide
@@ -45,12 +40,10 @@ function App() {
 
         return imageUrl
     }else{
-        console.log('No images found')
         return null;
     }
 
     }catch(e){
-        console.log('error12:',e)
         return null;
     }
   }
@@ -73,7 +66,6 @@ function App() {
             imageUrl=url
 
             if(imageUrl!=''){
-            console.log(imageUrl)
             base.SaveSong(file2.name,reader1.result,imageUrl)
             GetAllSongs();
             }
@@ -105,11 +97,11 @@ useEffect(()=>{
         </div>
       ) : (
         MusicArray.map((song, index) => (
-        <Musics key={index} name={song.name} image={song.image} setMusic={setMusic} GetAllSongs={GetAllSongs}/>
+        <Musics key={index} music={song} setMusic={setMusic} GetAllSongs={GetAllSongs}/>
         ))
       )}
     </div>
-      <Player musicName={Music1} musicThing={Music1} MusicArray={MusicArray2} setMusic={setMusic}/>
+      <Player music={Music1} MusicArray={MusicArray} setMusic={setMusic}/>
     </div>
   );
 }

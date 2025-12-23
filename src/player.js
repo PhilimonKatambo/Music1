@@ -1,30 +1,29 @@
 import './player.css'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBackward, faForward,faPlay,faPause } from "@fortawesome/free-solid-svg-icons";
-import React, { useState,useRef, useEffect} from "react"
+import { faBackward, faForward, faPlay, faPause } from "@fortawesome/free-solid-svg-icons";
+import React, { useState, useRef, useEffect } from "react"
 import DBase from './MusicBase';
 
-const Player = (Music) => {
+const Player = (props) => {
     const [progressbar, setProgress] = useState(0);
     const [isPlaying, setIsPlaying] = useState(false);
     const [duration, setDuration] = useState(0);
     const [currentTime, setCurrentTime] = useState(0);
-    const [name3,setName3]=useState('')
+    const [name3, setName3] = useState('')
     const audioRef = useRef(null);
 
     const togglePlayPause = () => {
 
         if (audioRef.current.paused) {
-            const playPromise=audioRef.current.play()
-            if(playPromise!==undefined){
-                
+            const playPromise = audioRef.current.play()
+            if (playPromise !== undefined) {
+
                 playPromise
-                .then(()=>setIsPlaying(true))
-                .catch(error=>{
-                    console.log(error) 
-                    //alert('You gotta select a song to play!')
-                })
-        }
+                    .then(() => setIsPlaying(true))
+                    .catch(error => {
+                        //alert('You gotta select a song to play!')
+                    })
+            }
         } else {
             audioRef.current.pause();
             setIsPlaying(false);
@@ -32,12 +31,12 @@ const Player = (Music) => {
 
     };
 
-    
+
     useEffect(() => {
         const handleKeyPress = (event) => {
             if (event.code === "Space") {
                 togglePlayPause()
-                event.preventDefault(); 
+                event.preventDefault();
             }
         };
         window.addEventListener("keydown", handleKeyPress);
@@ -46,22 +45,25 @@ const Player = (Music) => {
         };
     }, []);
 
-    const Next=()=>{
-        const newSong=Music.MusicArray.indexOf(name3)
-        console.log(name3)
-        console.log(newSong)
-        if(newSong!==Music.MusicArray.length-1){
-        Music.setMusic(Music.MusicArray[newSong+1])
-        setIsPlaying(false)
-        setProgress(0)
-        setCurrentTime(0)
-        setDuration(0)
-        retriveSongs();
+    const Next = () => {
+        const newSong = props.MusicArray.indexOf(props.music)
+        if (newSong !== props.MusicArray.length - 1) {
+            setIsPlaying(false)
+            setProgress(0)
+            setCurrentTime(0)
+            setDuration(0)
+            props.setMusic(props.MusicArray[newSong + 1])
         }
-        else{
-            alert("can't play the next song!")
+        else {
+            setIsPlaying(false)
+            setProgress(0)
+            setCurrentTime(0)
+            setDuration(0)
+            props.setMusic(props.MusicArray[0])
         }
     }
+
+
 
     useEffect(() => {
         const updateProgress = () => {
@@ -74,28 +76,31 @@ const Player = (Music) => {
         const audio = audioRef.current;
         if (audio) {
             audio.addEventListener("timeupdate", updateProgress);
-            //audio.addEventListener("ended",cosn)
             return () => {
 
                 audio.removeEventListener("timeupdate", updateProgress);
             };
         }
+
     }, []);
 
-    const retriveSongs = async ()=>{
-        const base= await new DBase();
-        let song1=[];
-        song1= await base.Retrive(Music.musicName);
-        setName3(song1?song1[0]:'')
-        audioRef.current.src=song1?song1[1]:'unknown'
-        if(audioRef.current.onLoadedMetadata=() => setDuration(audioRef.current.duration)){
-        togglePlayPause();
-        }
-    }
+    useEffect(() => {
+        const audio = audioRef.current;
+        if (!audio) return;
 
-    useEffect(()=>{
-       retriveSongs()
-    },[Music.musicThing])
+        audio.addEventListener("ended", Next);
+
+        return () => {
+            audio.removeEventListener("ended", Next);
+        };
+    }, [props.music]);
+
+    useEffect(() => {
+        audioRef.current.src = props.music?.value
+        if (audioRef.current.onLoadedMetadata = () => setDuration(audioRef.current.duration)) {
+            togglePlayPause();
+        }
+    }, [props.music])
 
     const ChangeMusicTime = (event) => {
         if (audioRef.current && audioRef.current.duration) {
@@ -105,24 +110,22 @@ const Player = (Music) => {
         }
     };
 
-    const Prev=()=>{
-        const newSong=Music.MusicArray.indexOf(name3)
-        if(newSong>=0){
-        Music.setMusic(Music.MusicArray[newSong-1])
-        setIsPlaying(false)
-        setProgress(0)
-        setCurrentTime(0)
-        setDuration(0)
-        retriveSongs();
+    const Prev = () => {
+        const newSong = props.MusicArray.indexOf(props.music)
+        if (newSong >= 0) {
+            props.setMusic(props.MusicArray[newSong - 1])
+            setIsPlaying(false)
+            setProgress(0)
+            setCurrentTime(0)
+            setDuration(0)
         }
-        else{
-            Music.setMusic(Music.MusicArray[0])
+        else {
+            props.setMusic(props.MusicArray[props.MusicArray.length -1 ])
             setIsPlaying(false)
             setProgress(0)
             setProgress(0)
             setCurrentTime(0)
             setDuration(0)
-            retriveSongs();
             alert("Can't play previous song!")
         }
     }
@@ -132,25 +135,25 @@ const Player = (Music) => {
             <audio
                 ref={audioRef}
                 onLoadedMetadata={() => setDuration(audioRef.current.duration)}
-                style={{display:'none'}}
-                ></audio>
-            <div id='MusicShow'>{name3}</div>
+                style={{ display: 'none' }}
+            ></audio>
+            <div id='MusicShow'>{props.music?.name}</div>
             <div id="controls">
                 <button id="pre">
-                    <FontAwesomeIcon icon={faBackward} id="back" onClick={Prev}/>
+                    <FontAwesomeIcon icon={faBackward} id="back" onClick={Prev} />
                 </button>
 
                 <div id="progress">
-                    
-                <input 
-                    type="range" 
-                    min="0" 
-                    max="100" 
-                    step='any'
-                    value={progressbar} 
-                    onChange={ChangeMusicTime} 
 
-                />
+                    <input
+                        type="range"
+                        min="0"
+                        max="100"
+                        step='any'
+                        value={progressbar}
+                        onChange={ChangeMusicTime}
+
+                    />
 
                     <div id="info">
                         <div id="duration">{Math.floor(duration / 60)}:{Math.floor(duration % 60)}</div>
