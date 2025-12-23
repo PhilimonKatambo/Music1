@@ -151,7 +151,6 @@ const Player = (props) => {
                         step='any'
                         value={progressbar}
                         onChange={ChangeMusicTime}
-
                     />
 
                     <div id="info">
