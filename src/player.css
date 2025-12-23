@@ -80,6 +80,7 @@ input[type="range"] {
     border-radius: 2px;
     outline:#0dd5f6;
     cursor: pointer;
+    transition: all 0.5s ease;
 }
 
 input[type="range"]::-webkit-slider-thumb {
@@ -89,5 +90,5 @@ input[type="range"]::-webkit-slider-thumb {
     background: #0dd5f6;
     border-radius: 50%;
     cursor: pointer;
-    transition: transform 0.2s ease-in-out;
+    transition: all 0.5s ease;
 }
