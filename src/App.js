@@ -28,6 +28,7 @@ function App() {
     await setMusics(all)
   }
 
+  // hide
   const SearchGG= async (query)=>{
     const API_KEY="AIzaSyBu91AIKPPFOMYkBS-6FC3i7aZ_-T57F6A"
     const CX="4268a945390f64a21" 
