@@ -11,10 +11,6 @@
     flex-direction: column;
     background-color: #0b1a21;
 }
-img{
-    background-color: rebeccapurple;
-    border-radius: 20px;
-}
 
 #songTitle{
     font-weight: bold;
@@ -56,12 +52,20 @@ img{
     background-position:center;
     width: 93%;
     height: 140px;
-    background-color: rebeccapurple;
+    /* background-color: rebeccapurple; */
     border-radius: 12px;
     padding: 5px;
     display: flex;
     align-items: flex-end;
     justify-content: flex-end;
+}
+
+#musicImgg{
+    position: absolute;
+    width: 10px;
+    height: 140px;
+    object-fit: cover;
+    border-radius: 10px;
 }
 
 #card:hover #trash{

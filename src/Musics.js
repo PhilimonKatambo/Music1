@@ -5,18 +5,22 @@ import DBase from './MusicBase';
 import { useEffect, useState } from 'react';
 
 const Musics = (props) => {
-
+    const [image, setImage] = useState()
     const deleteSong = () => {
         const base = new DBase()
         base.Delete(props.music.name)
         props.GetAllSongs();
     }
-    //<img src='logo192.png' alt="music logo"></img>
+
+    useEffect(() => {
+        console.log(props.music.image)
+        setImage(props.music.image!==null ? URL.createObjectURL(props.music.image): null);
+    }, [props.music.image])
+
     return (
         <div id="card">
             <div id='musicArt' style={{
-                backgroundImage:
-                    props.music.image ? `url(${props.music.image})` : `url( https://daily.jstor.org/wp-content/uploads/2023/02/good_times_with_bad_music_1050x700.jpg)`
+                backgroundImage: image !== null ? `url(${image})` : 'url("./assets/logoEdt.jpg")'
             }}>
                 <FontAwesomeIcon icon={faTrash} id="trash"
                     onClick={deleteSong}
