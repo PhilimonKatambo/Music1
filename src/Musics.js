@@ -13,7 +13,6 @@ const Musics = (props) => {
     }
 
     useEffect(() => {
-        console.log(props.music.image)
         setImage(props.music.image!==null ? URL.createObjectURL(props.music.image): null);
     }, [props.music.image])
 

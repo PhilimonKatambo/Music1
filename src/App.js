@@ -54,7 +54,6 @@ function App() {
     return new Promise((resolve, reject) => {
       jsmediatags.read(file, {
         onSuccess: ({ tags }) => {
-          console.log(tags)
           if (tags.picture) {
             const { data, format } = tags.picture;
             const byteArray = new Uint8Array(data);
@@ -121,7 +120,6 @@ function App() {
 
       // alert("Music uploaded fuckk");
     } catch (e) {
-      console.log(e)
     }
   }
 
