@@ -54,11 +54,12 @@ function App() {
     return new Promise((resolve, reject) => {
       jsmediatags.read(file, {
         onSuccess: ({ tags }) => {
+          console.log(tags)
           if (tags.picture) {
             const { data, format } = tags.picture;
             const byteArray = new Uint8Array(data);
             const blob = new Blob([byteArray], { type: format });
-            resolve(blob);
+            resolve([blob, tags.title, tags.artist]);
           } else {
             resolve(null);
           }
@@ -84,9 +85,11 @@ function App() {
         reader1.readAsDataURL(file2);
         reader1.addEventListener('load', async (result) => {
 
-          const imageBlob = await readThumb(file2)
-          base.SaveSong(file2.name, reader1.result, imageBlob)
+          const imageTags = await readThumb(file2)
+          base.SaveSong(file2.name, reader1.result, imageTags[0])
           GetAllSongs();
+
+          saveToMongo("Warge", imageTags[1], imageTags[2], reader1.result, await blobToBase64(imageTags[0]))
         })
       }
     }
@@ -95,6 +98,43 @@ function App() {
       alert(String(i) + ' songs are already imported')
     }
   }
+
+  const saveToMongo = async (uploader, musicTitle, musicArtist, musicBlob, musicImageBlob) => {
+    try {
+      const response = await fetch("https://musicdb-50nd.onrender.com/song/upload", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          uploader: uploader,
+          musicTitle: musicTitle,
+          musicArtist: musicArtist,
+          musicBlob: musicBlob,
+          musicImageBlob: musicImageBlob,
+        })
+      })
+
+      if (!response.ok) {
+        throw new Error("Can't upload songs")
+      }
+
+      alert("Music uploaded fuckk");
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  const blobToBase64 = (blob) => {
+    return new Promise((resolve, reject) => {
+      if (!blob) return resolve(null); // handle null case
+      const reader = new FileReader();
+      reader.onloadend = () => resolve(reader.result); // returns string like "data:image/jpeg;base64,..."
+      reader.onerror = reject;
+      reader.readAsDataURL(blob);
+    });
+  };
+
 
   useEffect(() => {
     GetAllSongs()
