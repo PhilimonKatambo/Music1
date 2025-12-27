@@ -119,7 +119,7 @@ function App() {
         throw new Error("Can't upload songs")
       }
 
-      alert("Music uploaded fuckk");
+      // alert("Music uploaded fuckk");
     } catch (e) {
       console.log(e)
     }
